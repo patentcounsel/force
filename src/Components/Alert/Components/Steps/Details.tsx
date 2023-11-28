@@ -21,6 +21,7 @@ import { useAlertContext } from "Components/Alert/Hooks/useAlertContext"
 import { useFeatureFlag } from "System/useFeatureFlag"
 import { useAlertTracking } from "Components/Alert/Hooks/useAlertTracking"
 import { EmailPreferenceWarningMessageQueryRenderer } from "Components/Alert/Components/Filters/EmailPreferenceWarningMessage"
+import { ArtistsSearchInput } from "Components/Alert/Components/Form/ArtistsSearchInput"
 
 export interface AlertFormikValues {
   name: string
@@ -70,7 +71,13 @@ export const Details: FC = () => {
             <Flex flexDirection="column" p={2} overflowY="auto">
               <Text variant="lg">Create Alert</Text>
               <Spacer y={2} />
-              <AlertNameInput />
+
+              {(state?.criteria?.artistIDs?.length ?? 0) > 0 ? (
+                <AlertNameInput />
+              ) : (
+                <ArtistsSearchInput />
+              )}
+
               <Spacer y={4} />
               <Join separator={<Spacer y={4} />}>
                 <Box>

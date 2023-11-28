@@ -23,6 +23,7 @@ export const ArtworkFilterCreateAlert: FC<ArtworkFilterCreateAlertProps> = ({
 }) => {
   const { aggregations } = useArtworkFilterContext()
   const newAlertModalEnabled = useFeatureFlag("onyx_artwork_alert_modal_v2")
+  const artistSearchEnabled = true // TODO: feature flag
   const filters = usePrepareFiltersForPills()
   const { entity } = useSavedSearchAlertContext()
 
@@ -30,7 +31,7 @@ export const ArtworkFilterCreateAlert: FC<ArtworkFilterCreateAlertProps> = ({
   const metric = filters?.metric ?? DEFAULT_METRIC
 
   // If there is no entity then we don't want to create an alert
-  if (isEmpty(entity)) return null
+  if (isEmpty(entity) && !artistSearchEnabled) return null
 
   if (newAlertModalEnabled) {
     return (
@@ -59,6 +60,8 @@ export const ArtworkFilterCreateAlert: FC<ArtworkFilterCreateAlertProps> = ({
       </>
     )
   }
+
+  if (isEmpty(entity)) return null
 
   return (
     <>

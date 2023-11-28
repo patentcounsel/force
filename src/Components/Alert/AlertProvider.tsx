@@ -62,7 +62,7 @@ export const AlertProvider: FC<AlertProviderProps> = ({
     metric: metric ?? userPreferences?.metric ?? DEFAULT_METRIC,
   }
   const [current, setCurrent] = useState<
-    "ALERT_DETAILS" | "ALERT_FILTERS" | "ALERT_CONFIRMATION"
+    "ALERT_DETAILS" | "ALERT_FILTERS" | "ALERT_CONFIRMATION" | "ALERT_ARTISTS"
   >("ALERT_DETAILS")
 
   useEffect(() => {
@@ -196,6 +196,9 @@ export const AlertProvider: FC<AlertProviderProps> = ({
         },
         goToFilters: () => {
           setCurrent("ALERT_FILTERS")
+        },
+        goToArtists: () => {
+          setCurrent("ALERT_ARTISTS")
         },
         onComplete: handleComplete,
         state,

@@ -19,6 +19,7 @@ import {
   SharedArtworkFilterContextProps,
 } from "Components/ArtworkFilter/ArtworkFilterContext"
 import { useSystemContext } from "System/useSystemContext"
+import { ArtworkFilterAlertContextProvider } from "Components/ArtworkFilter/ArtworkFilterAlertContextProvider"
 
 export interface CollectAppProps {
   match: Match
@@ -101,29 +102,30 @@ export const CollectApp: React.FC<CollectAppProps> = ({
         </Box>
 
         <Box>
-          <ArtworkFilter
-            viewer={viewer}
-            aggregations={
-              viewer?.artworksConnection
-                ?.aggregations as SharedArtworkFilterContextProps["aggregations"]
-            }
-            counts={viewer?.artworksConnection?.counts as Counts}
-            filters={location.query as any}
-            sortOptions={[
-              { text: "Recommended", value: "-decayed_merch" },
-              { text: "Recently Updated", value: "-partner_updated_at" },
-              { text: "Recently Added", value: "-published_at" },
-              { text: "Artwork Year (Descending)", value: "-year" },
-              { text: "Artwork Year (Ascending)", value: "year" },
-            ]}
-            onChange={filters => {
-              const url = buildUrlForCollectApp(filters)
-
-              if (typeof window !== "undefined") {
-                window.history.replaceState({}, "", url)
+          <ArtworkFilterAlertContextProvider>
+            <ArtworkFilter
+              viewer={viewer}
+              aggregations={
+                viewer?.artworksConnection
+                  ?.aggregations as SharedArtworkFilterContextProps["aggregations"]
               }
+              counts={viewer?.artworksConnection?.counts as Counts}
+              filters={location.query as any}
+              sortOptions={[
+                { text: "Recommended", value: "-decayed_merch" },
+                { text: "Recently Updated", value: "-partner_updated_at" },
+                { text: "Recently Added", value: "-published_at" },
+                { text: "Artwork Year (Descending)", value: "-year" },
+                { text: "Artwork Year (Ascending)", value: "year" },
+              ]}
+              onChange={filters => {
+                const url = buildUrlForCollectApp(filters)
 
-              /**
+                if (typeof window !== "undefined") {
+                  window.history.replaceState({}, "", url)
+                }
+
+                /**
              * FIXME: Ideally we route using our router, but are running into
              * synchronization issues between router state and URL bar state.
              *
@@ -139,9 +141,10 @@ export const CollectApp: React.FC<CollectAppProps> = ({
               })
             *
             */
-            }}
-            userPreferredMetric={userPreferences?.metric}
-          />
+              }}
+              userPreferredMetric={userPreferences?.metric}
+            />
+          </ArtworkFilterAlertContextProvider>
         </Box>
       </FrameWithRecentlyViewed>
     </>

@@ -142,11 +142,16 @@ export const reducer = (onShow: (State) => State, onReset: () => State) => (
 }
 
 export interface AlertContextProps {
-  current: "ALERT_DETAILS" | "ALERT_FILTERS" | "ALERT_CONFIRMATION"
+  current:
+    | "ALERT_DETAILS"
+    | "ALERT_FILTERS"
+    | "ALERT_CONFIRMATION"
+    | "ALERT_ARTISTS"
   dispatch: React.Dispatch<Action>
   goToFilters(): void
   goToDetails(): void
   onComplete(): void
+  goToArtists(): void
   state: State
 }
 
