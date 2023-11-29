@@ -1,8 +1,9 @@
 import ChevronLeftIcon from "@artsy/icons/ChevronLeftIcon"
-import { Box, Clickable, Flex, Input, Separator, Text } from "@artsy/palette"
+import { Box, Clickable, Flex, Separator, Text } from "@artsy/palette"
 import { FC } from "react"
 import { useAlertContext } from "Components/Alert/Hooks/useAlertContext"
 import { useDidMount } from "Utils/Hooks/useDidMount"
+import { AlertsArtistsSearchQueryRenderer } from "Components/Alert/Components/AlertsArtistsSearch"
 
 export const ArtistsSearch: FC = () => {
   const { goToDetails } = useAlertContext()
@@ -45,11 +46,7 @@ export const ArtistsSearch: FC = () => {
         </Clickable>
 
         <Box p={2}>
-          <Input
-            title="Search by artist, e.g. Banksy or Damien Hirst"
-            name="artists"
-            placeholder={"Search by artist, e.g. Banksy or Damien Hirst"}
-          />
+          <AlertsArtistsSearchQueryRenderer />
         </Box>
       </Flex>
     </Box>

@@ -2,11 +2,10 @@ import { FC } from "react"
 import { Input } from "@artsy/palette"
 import { useAlertContext } from "Components/Alert/Hooks/useAlertContext"
 
-export const AlertArtistsSearch: FC = () => {
+export const SelectArtistsInput: FC = () => {
   const { goToArtists } = useAlertContext()
 
   const transitionToArtists = () => {
-    // dispatch({ type: "SET_SETTINGS", payload: values })
     goToArtists()
   }
 

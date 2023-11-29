@@ -21,7 +21,7 @@ import { useAlertContext } from "Components/Alert/Hooks/useAlertContext"
 import { useFeatureFlag } from "System/useFeatureFlag"
 import { useAlertTracking } from "Components/Alert/Hooks/useAlertTracking"
 import { EmailPreferenceWarningMessageQueryRenderer } from "Components/Alert/Components/Filters/EmailPreferenceWarningMessage"
-import { ArtistsSearchInput } from "Components/Alert/Components/Form/ArtistsSearchInput"
+import { SelectArtistsInput } from "Components/Alert/Components/Form/SelectArtistsInput"
 
 export interface AlertFormikValues {
   name: string
@@ -39,6 +39,9 @@ export const Details: FC = () => {
     "onyx_artwork_alert_modal_v2_filters"
   )
   const isMounted = useDidMount()
+
+  const hasArtists = (state?.criteria?.artistIDs?.length ?? 0) > 0
+  const isCriteriaEmpty = !hasArtists
 
   return (
     <Formik<AlertFormikValues>
@@ -72,22 +75,20 @@ export const Details: FC = () => {
               <Text variant="lg">Create Alert</Text>
               <Spacer y={2} />
 
-              {(state?.criteria?.artistIDs?.length ?? 0) > 0 ? (
-                <AlertNameInput />
-              ) : (
-                <ArtistsSearchInput />
-              )}
+              {hasArtists ? <AlertNameInput /> : <SelectArtistsInput />}
 
               <Spacer y={4} />
               <Join separator={<Spacer y={4} />}>
-                <Box>
-                  <Text variant="sm-display" mb={1}>
-                    Filters
-                  </Text>
-                  <Flex flexWrap="wrap" gap={1}>
-                    <CriteriaPills />
-                  </Flex>
-                </Box>
+                {!isCriteriaEmpty && (
+                  <Box>
+                    <Text variant="sm-display" mb={1}>
+                      Filters
+                    </Text>
+                    <Flex flexWrap="wrap" gap={1}>
+                      <CriteriaPills />
+                    </Flex>
+                  </Box>
+                )}
 
                 {newAlertModalFilteresEnabled ? (
                   <Clickable
