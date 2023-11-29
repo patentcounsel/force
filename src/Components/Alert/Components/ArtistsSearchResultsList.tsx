@@ -7,12 +7,9 @@ import {
 import { ArtistsSearchResultsList_viewer$data } from "__generated__/ArtistsSearchResultsList_viewer.graphql"
 import { extractNodes } from "Utils/extractNodes"
 import { Flex, Spinner } from "@artsy/palette"
-import {
-  SearchNodeOption,
-  formatOptions,
-} from "Components/Search/utils/formatOptions"
 import { InfiniteScrollSentinel } from "Components/InfiniteScrollSentinel"
 import { ArtistSearchItem } from "Components/Alert/Components/ArtistSearchItem"
+import { useAlertContext } from "Components/Alert/Hooks/useAlertContext"
 
 interface ArtistsSearchResultsListProps {
   relay: RelayPaginationProp
@@ -27,7 +24,7 @@ const ArtistsSearchResultsList: FC<ArtistsSearchResultsListProps> = ({
   viewer,
   query,
 }) => {
-  console.log("[Debug] query", query)
+  const { state, dispatch } = useAlertContext()
 
   if (!viewer.searchConnection) {
     // TODO: Add a placeholder
@@ -37,14 +34,15 @@ const ArtistsSearchResultsList: FC<ArtistsSearchResultsListProps> = ({
 
   const options = extractNodes(viewer.searchConnection)
 
-  const formattedOptions = formatOptions(
-    options.map(option => {
-      return {
-        ...option,
-        imageUrl: option.coverArtwork?.image?.src || option.imageUrl,
-      }
-    }) as SearchNodeOption[]
-  )
+  const formattedOptions = options.map((option, index) => {
+    return {
+      text: option.displayLabel,
+      value: option.displayLabel,
+      subtitle: "Artist",
+      imageUrl: option.coverArtwork?.image?.src || option.imageUrl,
+      slug: option.slug,
+    }
+  })
 
   if (formattedOptions.length === 0) {
     // TODO: Add no results placeholder
@@ -64,7 +62,13 @@ const ArtistsSearchResultsList: FC<ArtistsSearchResultsListProps> = ({
   }
 
   const handleOptionClick = option => {
-    console.log("[Debug] click on option", option)
+    const artistIDs = [...(state.criteria?.artistIDs ?? []), ...[option.slug]]
+    console.log("[Debug] artistIDs: ", artistIDs)
+
+    dispatch({
+      type: "SET_CRITERIA_ATTRIBUTE",
+      payload: { key: "artistIDs", value: artistIDs },
+    })
   }
 
   return (
@@ -116,15 +120,8 @@ export const ArtistsSearchResultsListPaginationContainer = createPaginationConta
               href
               imageUrl
               __typename
-              ... on SearchableItem {
-                displayType
-                slug
-              }
               ... on Artist {
-                statuses {
-                  artworks
-                  auctionLots
-                }
+                slug
                 coverArtwork {
                   image {
                     src: url(version: ["small"])

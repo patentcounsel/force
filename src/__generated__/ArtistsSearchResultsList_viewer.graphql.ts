@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<20259df5ec8de476a502e8e62be63a5e>>
+ * @generated SignedSource<<fd7ff946e5ec5c703dcf0bcff7f40725>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,14 +21,9 @@ export type ArtistsSearchResultsList_viewer$data = {
           } | null | undefined;
         } | null | undefined;
         readonly displayLabel: string | null | undefined;
-        readonly displayType?: string | null | undefined;
         readonly href: string | null | undefined;
         readonly imageUrl: string | null | undefined;
         readonly slug?: string;
-        readonly statuses?: {
-          readonly artworks: boolean | null | undefined;
-          readonly auctionLots: boolean | null | undefined;
-        } | null | undefined;
       } | null | undefined;
     } | null | undefined> | null | undefined;
   } | null | undefined;
@@ -149,46 +144,7 @@ const node: ReaderFragment = {
                       "alias": null,
                       "args": null,
                       "kind": "ScalarField",
-                      "name": "displayType",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
                       "name": "slug",
-                      "storageKey": null
-                    }
-                  ],
-                  "type": "SearchableItem",
-                  "abstractKey": null
-                },
-                {
-                  "kind": "InlineFragment",
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "ArtistStatuses",
-                      "kind": "LinkedField",
-                      "name": "statuses",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "artworks",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "auctionLots",
-                          "storageKey": null
-                        }
-                      ],
                       "storageKey": null
                     },
                     {
@@ -278,6 +234,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "f18039497f9d58b0c79f22519242b91e";
+(node as any).hash = "aa63c650b03440e131309f6dbec9ffa4";
 
 export default node;

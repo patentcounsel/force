@@ -13,14 +13,12 @@ export interface ArtistSearchItemOptionProps {
   value: string
   subtitle: string
   imageUrl: string
-  showAuctionResultsButton: boolean
-  href: string
-  typename: string
+  slug: string
 }
 
 interface ArtistSearchItemProps {
   query: string
-  option: ArtistSearchItemOptionProps
+  option: any // TODO: fix any
   onClick: (option?: ArtistSearchItemOptionProps) => void
 }
 

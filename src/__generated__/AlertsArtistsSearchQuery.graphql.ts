@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<88a3c22049d9b9afe5acd333adedefc6>>
+ * @generated SignedSource<<4c2a40660b7e4835c7e265600ba7272e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -188,46 +188,7 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
-                                "name": "displayType",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
                                 "name": "slug",
-                                "storageKey": null
-                              }
-                            ],
-                            "type": "SearchableItem",
-                            "abstractKey": null
-                          },
-                          {
-                            "kind": "InlineFragment",
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "ArtistStatuses",
-                                "kind": "LinkedField",
-                                "name": "statuses",
-                                "plural": false,
-                                "selections": [
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "kind": "ScalarField",
-                                    "name": "artworks",
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "kind": "ScalarField",
-                                    "name": "auctionLots",
-                                    "storageKey": null
-                                  }
-                                ],
                                 "storageKey": null
                               },
                               {
@@ -342,12 +303,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "038a086fe747dc8f2498c23eb08b5356",
+    "cacheID": "e52dbf6b96709e5f1db34a868f536bf1",
     "id": null,
     "metadata": {},
     "name": "AlertsArtistsSearchQuery",
     "operationKind": "query",
-    "text": "query AlertsArtistsSearchQuery(\n  $term: String!\n  $hasTerm: Boolean!\n) {\n  viewer {\n    ...AlertsArtistsSearchInput_viewer_2Mejjw\n  }\n}\n\nfragment AlertsArtistsSearchInput_viewer_2Mejjw on Viewer {\n  ...ArtistsSearchResultsList_viewer_4hh6ED @include(if: $hasTerm)\n}\n\nfragment ArtistsSearchResultsList_viewer_4hh6ED on Viewer {\n  searchConnection(query: $term, entities: [ARTIST], mode: AUTOSUGGEST, first: 10) {\n    edges {\n      node {\n        displayLabel\n        href\n        imageUrl\n        __typename\n        ... on SearchableItem {\n          displayType\n          slug\n        }\n        ... on Artist {\n          statuses {\n            artworks\n            auctionLots\n          }\n          coverArtwork {\n            image {\n              src: url(version: [\"small\"])\n            }\n            id\n          }\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query AlertsArtistsSearchQuery(\n  $term: String!\n  $hasTerm: Boolean!\n) {\n  viewer {\n    ...AlertsArtistsSearchInput_viewer_2Mejjw\n  }\n}\n\nfragment AlertsArtistsSearchInput_viewer_2Mejjw on Viewer {\n  ...ArtistsSearchResultsList_viewer_4hh6ED @include(if: $hasTerm)\n}\n\nfragment ArtistsSearchResultsList_viewer_4hh6ED on Viewer {\n  searchConnection(query: $term, entities: [ARTIST], mode: AUTOSUGGEST, first: 10) {\n    edges {\n      node {\n        displayLabel\n        href\n        imageUrl\n        __typename\n        ... on Artist {\n          slug\n          coverArtwork {\n            image {\n              src: url(version: [\"small\"])\n            }\n            id\n          }\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

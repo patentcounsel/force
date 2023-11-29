@@ -1,4 +1,4 @@
-import { Input, Spacer } from "@artsy/palette"
+import { Flex, Input, Spacer } from "@artsy/palette"
 import { ArtistsSearchResultsListPaginationContainer } from "Components/Alert/Components/ArtistsSearchResultsList"
 import { SEARCH_DEBOUNCE_DELAY } from "Components/Search/constants"
 import { shouldStartSearching } from "Components/Search/utils/shouldStartSearching"
@@ -6,6 +6,8 @@ import { useDebounce } from "Utils/Hooks/useDebounce"
 import { FC, useCallback, useState } from "react"
 import { RelayRefetchProp, createRefetchContainer, graphql } from "react-relay"
 import { AlertsArtistsSearchInput_viewer$data } from "__generated__/AlertsArtistsSearchInput_viewer.graphql"
+import { CriteriaPills } from "Components/Alert/Components/CriteriaPills"
+import { useAlertContext } from "Components/Alert/Hooks/useAlertContext"
 
 interface AlertsArtistsSearchInputProps {
   viewer: AlertsArtistsSearchInput_viewer$data
@@ -16,6 +18,7 @@ export const AlertsArtistsSearchInput: FC<AlertsArtistsSearchInputProps> = ({
   viewer,
   relay,
 }) => {
+  const { state } = useAlertContext()
   const [inputValue, setInputValue] = useState("")
 
   const refetch = useCallback(
@@ -51,6 +54,8 @@ export const AlertsArtistsSearchInput: FC<AlertsArtistsSearchInputProps> = ({
     }
   }
 
+  const artistCriteriaExists = (state.criteria?.artistIDs?.length ?? 0) > 0
+
   return (
     <>
       <Input
@@ -60,6 +65,12 @@ export const AlertsArtistsSearchInput: FC<AlertsArtistsSearchInputProps> = ({
         value={inputValue}
         onChange={handleValueChange}
       />
+
+      {artistCriteriaExists && (
+        <Flex flexWrap="wrap" gap={1} my={1}>
+          <CriteriaPills editable={true} allowEditArtistIDs={true} />
+        </Flex>
+      )}
 
       <Spacer y={1} />
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<3c3753d39f6f627941253822c506bed5>>
+ * @generated SignedSource<<1556c1dfc5a7f205f6b330020e106431>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -181,46 +181,7 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "displayType",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
                             "name": "slug",
-                            "storageKey": null
-                          }
-                        ],
-                        "type": "SearchableItem",
-                        "abstractKey": null
-                      },
-                      {
-                        "kind": "InlineFragment",
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "ArtistStatuses",
-                            "kind": "LinkedField",
-                            "name": "statuses",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "artworks",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "auctionLots",
-                                "storageKey": null
-                              }
-                            ],
                             "storageKey": null
                           },
                           {
@@ -333,12 +294,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "672cfc021d3a100655bd7e32ca12c89a",
+    "cacheID": "057273e25064852f48743c5eab2350e0",
     "id": null,
     "metadata": {},
     "name": "ArtistsSearchResultsListPaginationQuery",
     "operationKind": "query",
-    "text": "query ArtistsSearchResultsListPaginationQuery(\n  $after: String\n  $term: String!\n) {\n  viewer {\n    ...ArtistsSearchResultsList_viewer_3Uwrp9\n  }\n}\n\nfragment ArtistsSearchResultsList_viewer_3Uwrp9 on Viewer {\n  searchConnection(query: $term, entities: [ARTIST], mode: AUTOSUGGEST, first: 10, after: $after) {\n    edges {\n      node {\n        displayLabel\n        href\n        imageUrl\n        __typename\n        ... on SearchableItem {\n          displayType\n          slug\n        }\n        ... on Artist {\n          statuses {\n            artworks\n            auctionLots\n          }\n          coverArtwork {\n            image {\n              src: url(version: [\"small\"])\n            }\n            id\n          }\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query ArtistsSearchResultsListPaginationQuery(\n  $after: String\n  $term: String!\n) {\n  viewer {\n    ...ArtistsSearchResultsList_viewer_3Uwrp9\n  }\n}\n\nfragment ArtistsSearchResultsList_viewer_3Uwrp9 on Viewer {\n  searchConnection(query: $term, entities: [ARTIST], mode: AUTOSUGGEST, first: 10, after: $after) {\n    edges {\n      node {\n        displayLabel\n        href\n        imageUrl\n        __typename\n        ... on Artist {\n          slug\n          coverArtwork {\n            image {\n              src: url(version: [\"small\"])\n            }\n            id\n          }\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

@@ -5,9 +5,13 @@ import { useAlertContext } from "Components/Alert/Hooks/useAlertContext"
 
 interface CriteriaPillsProps {
   editable?: boolean
+  allowEditArtistIDs?: boolean
 }
 
-export const CriteriaPills: FC<CriteriaPillsProps> = ({ editable = true }) => {
+export const CriteriaPills: FC<CriteriaPillsProps> = ({
+  editable = true,
+  allowEditArtistIDs = false,
+}) => {
   const { state, dispatch } = useAlertContext()
 
   const labels = state?.preview?.labels
@@ -26,7 +30,10 @@ export const CriteriaPills: FC<CriteriaPillsProps> = ({ editable = true }) => {
 
         const key = `filter-label-${label?.field}-${label?.value}`
 
-        if (!editable || label?.field === "artistIDs") {
+        if (
+          !allowEditArtistIDs &&
+          (!editable || label?.field === "artistIDs")
+        ) {
           return (
             <Pill key={key} variant="filter" disabled>
               {label?.displayValue}
