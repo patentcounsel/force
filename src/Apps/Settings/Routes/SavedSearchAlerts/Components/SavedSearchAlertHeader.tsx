@@ -1,4 +1,6 @@
-import { Flex, Option, Select, Text } from "@artsy/palette"
+import { Box, Flex, Option, Select, Text } from "@artsy/palette"
+import { CreateAlertButton } from "Components/Alert/Components/CreateAlertButton"
+import { ArtworkFilterAlertContextProvider } from "Components/ArtworkFilter/ArtworkFilterAlertContextProvider"
 import { FC } from "react"
 
 interface SavedSearchAlertHeaderProps {
@@ -23,9 +25,21 @@ export const SavedSearchAlertHeader: FC<SavedSearchAlertHeaderProps> = ({
       mb={4}
       mx={[2, 0]}
     >
-      <Text variant={["md", "lg"]} mb={[4, 0]} mr={[0, 2]}>
-        Alerts
-      </Text>
+      <Flex
+        flexDirection={["column", "row"]}
+        alignItems={["stretch", "center"]}
+        mb={[4, 0]}
+      >
+        <Text variant={["md", "lg"]} mr={[0, 2]}>
+          Alerts
+        </Text>
+
+        <Box maxWidth={["250px", null]} mt={[1, 0]}>
+          <ArtworkFilterAlertContextProvider>
+            <CreateAlertButton />
+          </ArtworkFilterAlertContextProvider>
+        </Box>
+      </Flex>
 
       <Select
         title="Sort"
