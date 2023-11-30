@@ -6,15 +6,23 @@ import { useAlertContext } from "Components/Alert/Hooks/useAlertContext"
 interface CriteriaPillsProps {
   editable?: boolean
   allowEditArtistIDs?: boolean
+  entityTypes?: string[]
 }
 
 export const CriteriaPills: FC<CriteriaPillsProps> = ({
   editable = true,
   allowEditArtistIDs = false,
+  entityTypes = [],
 }) => {
   const { state, dispatch } = useAlertContext()
 
-  const labels = state?.preview?.labels
+  let labels = state?.preview?.labels
+
+  if (entityTypes.length > 0) {
+    labels = labels?.filter(label => {
+      return entityTypes.includes(label?.field ?? "")
+    })
+  }
 
   if (!labels) {
     return <CriteriaPillsPlaceholder />

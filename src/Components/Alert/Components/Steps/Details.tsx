@@ -33,7 +33,13 @@ export interface AlertFormikValues {
 export const Details: FC = () => {
   const { clickedAddFilters } = useAlertTracking()
 
-  const { onComplete, dispatch, goToFilters, state } = useAlertContext()
+  const {
+    onComplete,
+    dispatch,
+    goToFilters,
+    state,
+    goToArtists,
+  } = useAlertContext()
 
   const newAlertModalFilteresEnabled = useFeatureFlag(
     "onyx_artwork_alert_modal_v2_filters"
@@ -85,8 +91,18 @@ export const Details: FC = () => {
                       Filters
                     </Text>
                     <Flex flexWrap="wrap" gap={1}>
-                      <CriteriaPills />
+                      <CriteriaPills
+                        allowEditArtistIDs={!state.inArtistContext}
+                      />
                     </Flex>
+
+                    {!state.inArtistContext && (
+                      <Clickable onClick={goToArtists}>
+                        <Text variant="xs" color="blue100">
+                          Add more artists
+                        </Text>
+                      </Clickable>
+                    )}
                   </Box>
                 )}
 
@@ -144,6 +160,7 @@ export const Details: FC = () => {
                     handleSubmit()
                   }}
                   width="100%"
+                  disabled={!hasArtists}
                 >
                   Create Alert
                 </Button>

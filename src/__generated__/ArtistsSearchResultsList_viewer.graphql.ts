@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fd7ff946e5ec5c703dcf0bcff7f40725>>
+ * @generated SignedSource<<a8847887295e536d6e1278098a8774a1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,6 +21,7 @@ export type ArtistsSearchResultsList_viewer$data = {
           } | null | undefined;
         } | null | undefined;
         readonly displayLabel: string | null | undefined;
+        readonly formattedNationalityAndBirthday?: string | null | undefined;
         readonly href: string | null | undefined;
         readonly imageUrl: string | null | undefined;
         readonly slug?: string;
@@ -144,6 +145,13 @@ const node: ReaderFragment = {
                       "alias": null,
                       "args": null,
                       "kind": "ScalarField",
+                      "name": "formattedNationalityAndBirthday",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
                       "name": "slug",
                       "storageKey": null
                     },
@@ -234,6 +242,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "aa63c650b03440e131309f6dbec9ffa4";
+(node as any).hash = "0eb52b34172517699ad1bb36b62e0803";
 
 export default node;

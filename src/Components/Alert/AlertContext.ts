@@ -28,6 +28,7 @@ export type State = {
   preview: PreviewSavedSearch
   visible: boolean
   metric?: Metric
+  inArtistContext: boolean
 }
 
 export const DEFAULT_STATE: State = {
@@ -41,6 +42,7 @@ export const DEFAULT_STATE: State = {
   preview: null,
   visible: false,
   metric: DEFAULT_METRIC,
+  inArtistContext: false,
 }
 
 type Action =

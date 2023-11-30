@@ -60,6 +60,7 @@ export const AlertProvider: FC<AlertProviderProps> = ({
     preview: null,
     visible: visible ?? false,
     metric: metric ?? userPreferences?.metric ?? DEFAULT_METRIC,
+    inArtistContext: (initialCriteria?.artistIDs ?? []).length > 0,
   }
   const [current, setCurrent] = useState<
     "ALERT_DETAILS" | "ALERT_FILTERS" | "ALERT_CONFIRMATION" | "ALERT_ARTISTS"

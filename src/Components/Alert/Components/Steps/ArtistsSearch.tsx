@@ -12,6 +12,7 @@ export const ArtistsSearch: FC = () => {
   return (
     <Box
       minWidth={[null, 500]}
+      maxWidth={[null, 500]}
       maxHeight={["auto", 750]}
       minHeight={["auto", 750]}
       overflowY="auto"

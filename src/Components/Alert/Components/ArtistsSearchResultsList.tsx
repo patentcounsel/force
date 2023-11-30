@@ -28,7 +28,6 @@ const ArtistsSearchResultsList: FC<ArtistsSearchResultsListProps> = ({
 
   if (!viewer.searchConnection) {
     // TODO: Add a placeholder
-    console.log("[Debug] viewer.searchConnection is null")
     return null
   }
 
@@ -38,7 +37,7 @@ const ArtistsSearchResultsList: FC<ArtistsSearchResultsListProps> = ({
     return {
       text: option.displayLabel,
       value: option.displayLabel,
-      subtitle: "Artist",
+      subtitle: option.formattedNationalityAndBirthday,
       imageUrl: option.coverArtwork?.image?.src || option.imageUrl,
       slug: option.slug,
     }
@@ -63,7 +62,6 @@ const ArtistsSearchResultsList: FC<ArtistsSearchResultsListProps> = ({
 
   const handleOptionClick = option => {
     const artistIDs = [...(state.criteria?.artistIDs ?? []), ...[option.slug]]
-    console.log("[Debug] artistIDs: ", artistIDs)
 
     dispatch({
       type: "SET_CRITERIA_ATTRIBUTE",
@@ -121,6 +119,7 @@ export const ArtistsSearchResultsListPaginationContainer = createPaginationConta
               imageUrl
               __typename
               ... on Artist {
+                formattedNationalityAndBirthday
                 slug
                 coverArtwork {
                   image {

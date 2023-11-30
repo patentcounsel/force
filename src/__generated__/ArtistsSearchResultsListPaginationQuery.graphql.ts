@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<1556c1dfc5a7f205f6b330020e106431>>
+ * @generated SignedSource<<2c1c953e97d08b47ed0e10c111c19ffb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -181,6 +181,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "formattedNationalityAndBirthday",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "slug",
                             "storageKey": null
                           },
@@ -294,12 +301,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "057273e25064852f48743c5eab2350e0",
+    "cacheID": "aa9892d78017d9ff1b8be3c35081fb10",
     "id": null,
     "metadata": {},
     "name": "ArtistsSearchResultsListPaginationQuery",
     "operationKind": "query",
-    "text": "query ArtistsSearchResultsListPaginationQuery(\n  $after: String\n  $term: String!\n) {\n  viewer {\n    ...ArtistsSearchResultsList_viewer_3Uwrp9\n  }\n}\n\nfragment ArtistsSearchResultsList_viewer_3Uwrp9 on Viewer {\n  searchConnection(query: $term, entities: [ARTIST], mode: AUTOSUGGEST, first: 10, after: $after) {\n    edges {\n      node {\n        displayLabel\n        href\n        imageUrl\n        __typename\n        ... on Artist {\n          slug\n          coverArtwork {\n            image {\n              src: url(version: [\"small\"])\n            }\n            id\n          }\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query ArtistsSearchResultsListPaginationQuery(\n  $after: String\n  $term: String!\n) {\n  viewer {\n    ...ArtistsSearchResultsList_viewer_3Uwrp9\n  }\n}\n\nfragment ArtistsSearchResultsList_viewer_3Uwrp9 on Viewer {\n  searchConnection(query: $term, entities: [ARTIST], mode: AUTOSUGGEST, first: 10, after: $after) {\n    edges {\n      node {\n        displayLabel\n        href\n        imageUrl\n        __typename\n        ... on Artist {\n          formattedNationalityAndBirthday\n          slug\n          coverArtwork {\n            image {\n              src: url(version: [\"small\"])\n            }\n            id\n          }\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();

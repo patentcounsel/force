@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4c2a40660b7e4835c7e265600ba7272e>>
+ * @generated SignedSource<<d867453a256eb0f7387b0cef6bbebeb1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -188,6 +188,13 @@ return {
                                 "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
+                                "name": "formattedNationalityAndBirthday",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
                                 "name": "slug",
                                 "storageKey": null
                               },
@@ -303,12 +310,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e52dbf6b96709e5f1db34a868f536bf1",
+    "cacheID": "26657f75e2dbda56f27679fdbf48f9d9",
     "id": null,
     "metadata": {},
     "name": "AlertsArtistsSearchQuery",
     "operationKind": "query",
-    "text": "query AlertsArtistsSearchQuery(\n  $term: String!\n  $hasTerm: Boolean!\n) {\n  viewer {\n    ...AlertsArtistsSearchInput_viewer_2Mejjw\n  }\n}\n\nfragment AlertsArtistsSearchInput_viewer_2Mejjw on Viewer {\n  ...ArtistsSearchResultsList_viewer_4hh6ED @include(if: $hasTerm)\n}\n\nfragment ArtistsSearchResultsList_viewer_4hh6ED on Viewer {\n  searchConnection(query: $term, entities: [ARTIST], mode: AUTOSUGGEST, first: 10) {\n    edges {\n      node {\n        displayLabel\n        href\n        imageUrl\n        __typename\n        ... on Artist {\n          slug\n          coverArtwork {\n            image {\n              src: url(version: [\"small\"])\n            }\n            id\n          }\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
+    "text": "query AlertsArtistsSearchQuery(\n  $term: String!\n  $hasTerm: Boolean!\n) {\n  viewer {\n    ...AlertsArtistsSearchInput_viewer_2Mejjw\n  }\n}\n\nfragment AlertsArtistsSearchInput_viewer_2Mejjw on Viewer {\n  ...ArtistsSearchResultsList_viewer_4hh6ED @include(if: $hasTerm)\n}\n\nfragment ArtistsSearchResultsList_viewer_4hh6ED on Viewer {\n  searchConnection(query: $term, entities: [ARTIST], mode: AUTOSUGGEST, first: 10) {\n    edges {\n      node {\n        displayLabel\n        href\n        imageUrl\n        __typename\n        ... on Artist {\n          formattedNationalityAndBirthday\n          slug\n          coverArtwork {\n            image {\n              src: url(version: [\"small\"])\n            }\n            id\n          }\n        }\n        ... on Node {\n          __isNode: __typename\n          id\n        }\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
