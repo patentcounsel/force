@@ -1,5 +1,7 @@
-import { Box, Separator, Text } from "@artsy/palette"
+import { Box, Separator, Spacer, Text } from "@artsy/palette"
 import { SendFeedback } from "Apps/Search/Components/SendFeedback"
+import { CreateAlertButton } from "Components/Alert/Components/CreateAlertButton"
+import { ArtworkFilterAlertContextProvider } from "Components/ArtworkFilter/ArtworkFilterAlertContextProvider"
 import { useArtworkFilterContext } from "Components/ArtworkFilter/ArtworkFilterContext"
 import { FC } from "react"
 import { useTranslation } from "react-i18next"
@@ -33,6 +35,12 @@ export const ZeroState: FC<ZeroStateProps> = ({ term }) => {
           ? "Try removing some filters or try another search term."
           : "Try checking for spelling errors or try another search term."}
       </Text>
+
+      <Spacer y={2} />
+
+      <ArtworkFilterAlertContextProvider>
+        <CreateAlertButton />
+      </ArtworkFilterAlertContextProvider>
 
       <Separator my={4} />
 
