@@ -270,6 +270,7 @@ type Agreement {
 
 type Alert {
   additionalGeneNames: [String]
+  artists: [Artist!]!
   attributionClass: [String]
   formattedPriceRange: String
   hasRecentlyEnabledUserSearchCriteria: Boolean
@@ -306,6 +307,16 @@ type AlertEdge {
 
   # The item at the end of the edge
   node: Alert
+}
+
+type AlertNotificationContent {
+  alert: Alert
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 }
 
 type AlertsCounts {
@@ -1193,6 +1204,11 @@ type ArticleEdge {
 
   # The item at the end of the edge
   node: Article
+}
+
+type ArticleFeaturedArtistNotificationContent {
+  article: Article
+  artists: [Artist!]!
 }
 
 type ArticleFeatureSection {
@@ -2722,6 +2738,16 @@ type ArtworkPriceInsights {
   ): String
   medium: String
   sellThroughRate: Float
+}
+
+type ArtworkPublishedNotificationContent {
+  artists: [Artist!]!
+  artworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
 }
 
 # The results for one of the requested aggregations
@@ -13402,6 +13428,7 @@ type Notification implements Node {
     first: Int
     last: Int
   ): ArtworkConnection
+  content: NotificationContent
   createdAt(
     format: String
 
@@ -13440,6 +13467,13 @@ type NotificationConnection {
   pageInfo: PageInfo!
   totalCount: Int
 }
+
+union NotificationContent =
+    AlertNotificationContent
+  | ArticleFeaturedArtistNotificationContent
+  | ArtworkPublishedNotificationContent
+  | ShowOpenedNotificationContent
+  | ViewingRoomPublishedNotificationContent
 
 type NotificationCounts {
   total(
@@ -17776,6 +17810,10 @@ type ShowFollowArtistEdge {
   node: ShowFollowArtist
 }
 
+type ShowOpenedNotificationContent {
+  show: Show
+}
+
 enum ShowSorts {
   END_AT_ASC
   END_AT_DESC
@@ -20813,6 +20851,13 @@ type ViewingRoomEdge {
 
 # A viewing room or errors object
 union ViewingRoomOrErrorsUnion = Errors | ViewingRoom
+
+type ViewingRoomPublishedNotificationContent {
+  viewingRoom: ViewingRoom
+
+  # The ID of the viewing room, for use in stitching
+  viewingRoomID: String!
+}
 
 # The connection type for ViewingRoom.
 type ViewingRoomsConnection {
