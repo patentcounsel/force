@@ -18,7 +18,7 @@ jest.mock("Utils/Hooks/useMatchMedia", () => ({
 jest.mock("Apps/Order/Routes/Shipping2/Hooks/useShippingContext", () => {
   return {
     useShippingContext: () => ({
-      parsedOrderData: {
+      orderData: {
         availableShippingCountries: ["US"],
         savedFulfillmentData: { selectedSavedAddressId: "2" },
       },
@@ -36,10 +36,11 @@ class SavedAddressesTestPage extends RootTestPage {
 }
 
 describe("Saved Addresses", () => {
+  const mockUseTracking = useTracking as jest.Mock
   const trackEvent = jest.fn()
 
   beforeAll(() => {
-    ;(useTracking as jest.Mock).mockImplementation(() => ({
+    mockUseTracking.mockImplementation(() => ({
       trackEvent,
     }))
   })

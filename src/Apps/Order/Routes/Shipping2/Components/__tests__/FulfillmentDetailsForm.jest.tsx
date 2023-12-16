@@ -47,7 +47,7 @@ jest.mock("Apps/Order/Routes/Shipping2/Hooks/useShippingContext", () => ({
 }))
 
 // Mock relay-connected component
-jest.mock("Apps/Order/Routes/Shipping2/SavedAddresses2", () => ({
+jest.mock("Apps/Order/Routes/Shipping2/Components/SavedAddresses2", () => ({
   SavedAddressesFragmentContainer: () => <div />,
 }))
 
@@ -69,6 +69,7 @@ beforeEach(() => {
   ;(useTracking as jest.Mock).mockImplementation(() => ({
     trackEvent: mockTrackEvent,
   }))
+
   mockOnAddressVerificationComplete.mockReset()
   testProps = {
     shippingMode: "saved_addresses",
@@ -97,15 +98,13 @@ beforeEach(() => {
     } as any,
   }
   mockShippingContext = {
-    parsedOrderData: {
+    orderData: {
       isArtsyShipping: false,
       shippingQuotes: [],
     },
 
-    helpers: {
-      fulfillmentDetails: {
-        setFulfillmentFormHelpers: jest.fn(),
-      },
+    actions: {
+      setFormHelpers: jest.fn(),
     },
   } as any
 })
@@ -131,6 +130,8 @@ const validAddress = {
 }
 
 describe("FulfillmentDetailsForm", () => {
+  const mockUseFeatureFlag = useFeatureFlag as jest.Mock
+
   describe("Pickup available", () => {
     beforeEach(() => {
       testProps.availableFulfillmentTypes = [
@@ -467,7 +468,7 @@ describe("FulfillmentDetailsForm", () => {
       })
 
       global.fetch = mockFetch
-      ;(useFeatureFlag as jest.Mock).mockImplementation(
+      mockUseFeatureFlag.mockImplementation(
         featureName => featureName === "address_autocomplete_us"
       )
     })

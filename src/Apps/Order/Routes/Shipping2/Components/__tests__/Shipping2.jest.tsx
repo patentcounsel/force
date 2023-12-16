@@ -262,8 +262,12 @@ let realConsoleError: typeof console.error
 
 describe("Shipping", () => {
   const mockUseRouter = useRouter as jest.Mock
+  const mockUseTracking = useTracking as jest.Mock
+  const mockUseFeatureFlag = useFeatureFlag as jest.Mock
+
   let isCommittingMutation: boolean
   let relayEnv: MockEnvironment
+
   const mockPush = jest.fn(() => {
     act(() =>
       relayEnv.mock.getAllOperations().forEach(op => {
@@ -283,10 +287,10 @@ describe("Shipping", () => {
     })
     isCommittingMutation = false
     relayEnv = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockImplementation(() => ({
+    mockUseTracking.mockImplementation(() => ({
       trackEvent: jest.fn(),
     }))
-    ;(useFeatureFlag as jest.Mock).mockImplementation(() => false)
+    mockUseFeatureFlag.mockImplementation(() => false)
 
     mockUseRouter.mockReturnValue({
       router: {
@@ -744,7 +748,7 @@ describe("Shipping", () => {
       describe("address verification", () => {
         describe("with US enabled and international disabled", () => {
           beforeEach(() => {
-            ;(useFeatureFlag as jest.Mock).mockImplementation(
+            mockUseFeatureFlag.mockImplementation(
               (featureName: string) => featureName === "address_verification_us"
             )
           })
@@ -928,7 +932,7 @@ describe("Shipping", () => {
         describe("with US disabled and international enabled", () => {
           let inputAddress
           beforeEach(() => {
-            ;(useFeatureFlag as jest.Mock).mockImplementation(
+            mockUseFeatureFlag.mockImplementation(
               (featureName: string) =>
                 featureName === "address_verification_intl"
             )
@@ -1146,7 +1150,7 @@ describe("Shipping", () => {
       describe("address verification", () => {
         describe("with address verification enabled", () => {
           beforeEach(() => {
-            ;(useFeatureFlag as jest.Mock).mockImplementation(
+            mockUseFeatureFlag.mockImplementation(
               (featureName: string) => featureName === "address_verification_us"
             )
           })
@@ -1278,7 +1282,7 @@ describe("Shipping", () => {
       describe("address verification", () => {
         describe("with US enabled and international disabled", () => {
           beforeEach(() => {
-            ;(useFeatureFlag as jest.Mock).mockImplementation(
+            mockUseFeatureFlag.mockImplementation(
               (featureName: string) => featureName === "address_verification_us"
             )
           })

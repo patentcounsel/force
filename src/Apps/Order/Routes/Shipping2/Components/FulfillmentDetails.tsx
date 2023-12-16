@@ -405,7 +405,7 @@ const getInitialValues = (
 
   // The user doesn't have a valid ship-to address, so we'll return empty values.
   // TODO: This doesn't account for matching the saved address id
-  // (that is still in parsedOrderData). In addition the initial values
+  // (that is still in orderData). In addition the initial values
   // are less relevant if the user has saved addresses - Setting country
   // doesn't matter.
   const initialFulfillmentValues: ShipValues["attributes"] = {
