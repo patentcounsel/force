@@ -48,7 +48,7 @@ export const FulfillmentDetails: FC<FulfillmentDetailsProps> = ({
   const orderTracking = useOrderTracking()
 
   const savedAddresses = extractNodes(meData.addressConnection)
-  const hasSavedAddresses = !!savedAddresses.length
+  const hasSavedAddresses = savedAddresses.length > 0
 
   // Note: Trigger address verification by setting this to true
   const [verifyAddressNow, setVerifyAddressNow] = useState<boolean>(false)
@@ -65,10 +65,12 @@ export const FulfillmentDetails: FC<FulfillmentDetailsProps> = ({
     "address_verification_intl"
   )
 
-  const shippingMode: Exclude<AddressFormMode, "pickup"> =
-    forceNewAddressFormMode || savedAddresses.length === 0
-      ? "new_address"
-      : "saved_addresses"
+  const shippingMode: Exclude<AddressFormMode, "pickup"> = (() => {
+    if (forceNewAddressFormMode || !hasSavedAddresses) {
+      return "new_address"
+    }
+    return "saved_addresses"
+  })()
 
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const firstArtwork = extractNodes(orderData.lineItems)[0]!.artwork!
@@ -92,19 +94,23 @@ export const FulfillmentDetails: FC<FulfillmentDetailsProps> = ({
     }
   }, [forceNewAddressFormMode, hasSavedAddresses])
 
-  // Force-re-save fulfillment details with existing values to refresh shipping quotes
+  /*
+   * Re-save fulfillment details on load if they are already saved
+   * and shipping quotes need refreshing for new address mode only
+   */
   useEffect(() => {
     const existingFulfillmentDetails =
       shippingContext.orderData.savedFulfillmentDetails
     if (
-      shippingContext.state.stage === "refresh_shipping_quotes" &&
-      existingFulfillmentDetails?.fulfillmentType === FulfillmentType.SHIP
+      existingFulfillmentDetails?.fulfillmentType === FulfillmentType.SHIP &&
+      existingFulfillmentDetails.isArtsyShipping &&
+      shippingMode === "new_address"
     ) {
       submitFulfillmentDetails({
         performUserAddressUpdates: false,
         formValues: {
           attributes: existingFulfillmentDetails.fulfillmentDetails as ShipValues["attributes"],
-          fulfillmentType: existingFulfillmentDetails?.fulfillmentType,
+          fulfillmentType: FulfillmentType.SHIP,
         },
       })
     }
@@ -114,7 +120,6 @@ export const FulfillmentDetails: FC<FulfillmentDetailsProps> = ({
   /**
    * Handlers
    */
-
   const handleFulfillmentDetailsSaved = ({
     requiresArtsyShipping,
   }: {
@@ -122,9 +127,12 @@ export const FulfillmentDetails: FC<FulfillmentDetailsProps> = ({
   }) => {
     if (requiresArtsyShipping) {
       shippingContext.actions.setStage("shipping_quotes")
-    } else {
+    } else if (shippingMode === "new_address") {
       // Advance to payment
       router.push(`/orders/${orderData.internalID}/payment`)
+    } else {
+      // Don't advance if we're using saved addresses; instead wait for click
+      shippingContext.actions.setStage("advance_on_click")
     }
   }
 
@@ -136,7 +144,7 @@ export const FulfillmentDetails: FC<FulfillmentDetailsProps> = ({
 
     return (
       values.fulfillmentType === FulfillmentType.SHIP &&
-      !hasSavedAddresses &&
+      shippingMode === "new_address" &&
       enabledForAddress &&
       values.attributes.addressVerifiedBy === null
     )
@@ -243,7 +251,7 @@ export const FulfillmentDetails: FC<FulfillmentDetailsProps> = ({
       return
     } else {
       return submitFulfillmentDetails({
-        performUserAddressUpdates: forceNewAddressFormMode,
+        performUserAddressUpdates: shippingMode === "new_address",
         formValues: values,
       })
     }

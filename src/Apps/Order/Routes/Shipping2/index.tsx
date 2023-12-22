@@ -27,7 +27,7 @@ import { CollapseDetails } from "Apps/Order/Routes/Shipping2/Components/Collapse
 export type ShippingStage =
   | "fulfillment_details"
   | "shipping_quotes"
-  | "refresh_shipping_quotes"
+  | "advance_on_click"
 
 export interface ShippingProps {
   order: Shipping2_order$data

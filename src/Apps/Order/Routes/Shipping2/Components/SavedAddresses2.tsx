@@ -1,8 +1,14 @@
 import * as React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import { compact } from "lodash"
-import { RadioGroup, BorderedRadio, Spacer, Clickable } from "@artsy/palette"
+import {
+  RadioGroup,
+  BorderedRadio,
+  Spacer,
+  Clickable,
+  usePrevious,
+} from "@artsy/palette"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { SavedAddresses2_me$data } from "__generated__/SavedAddresses2_me.graphql"
 import {
@@ -25,7 +31,6 @@ import { useShippingContext } from "Apps/Order/Routes/Shipping2/Hooks/useShippin
 import { useOrderTracking } from "Apps/Order/Hooks/useOrderTracking"
 
 export const NEW_ADDRESS = "NEW_ADDRESS"
-const PAGE_SIZE = 30
 
 export interface SavedAddressesProps {
   relay: RelayRefetchProp
@@ -41,7 +46,7 @@ const SavedAddresses: React.FC<SavedAddressesProps> = props => {
   )
   const shippingContext = useShippingContext()
 
-  const { onSelect, me, relay } = props
+  const { onSelect, me } = props
 
   const addressList = compact<SavedAddressType>(
     extractNodes(me?.addressConnection) ?? []
@@ -49,23 +54,21 @@ const SavedAddresses: React.FC<SavedAddressesProps> = props => {
 
   const selectedSavedAddressId =
     shippingContext.orderData.savedFulfillmentDetails?.selectedSavedAddressId
+
   const [selectedAddressID, setSelectedAddressID] = useState<
     string | undefined
-  >(
-    getBestAvailableAddress(
-      addressList,
-      selectedSavedAddressId,
-      shippingContext.orderData.availableShippingCountries
-    )?.internalID
-  )
-
-  const selectedAddress =
-    selectedAddressID && getAddressByID(addressList, selectedAddressID)
-  const selectedAddressPresent = !!selectedAddress
+  >()
 
   const orderTracking = useOrderTracking()
 
-  React.useEffect(() => {
+  /* Effects */
+
+  // Automatically select best available address ID if it isn't present
+  useEffect(() => {
+    const selectedAddress =
+      selectedAddressID && getAddressByID(addressList, selectedAddressID)
+    const selectedAddressPresent = !!selectedAddress
+
     if (!selectedAddressPresent) {
       setSelectedAddressID(
         getBestAvailableAddress(
@@ -76,46 +79,39 @@ const SavedAddresses: React.FC<SavedAddressesProps> = props => {
       )
     }
   }, [
-    selectedAddressPresent,
     addressList,
     selectedSavedAddressId,
     shippingContext.orderData.availableShippingCountries,
+    selectedAddressID,
   ])
 
-  const handleSelectAddress = (id: string): void => {
-    setSelectedAddressID(id)
-    const selectedAddress = getAddressByID(addressList, id)
-    if (!selectedAddress) {
-      logger.warn("Address not found: ", id)
-    }
-    orderTracking.clickedShippingAddress()
-    // Set values on the fulfillment form context.
-    // Can these values be invalid? If so, maybe we could pop a form up for
-    // them to fix it. Seems unlikely.
-    onSelect(addressWithFallbackValues(selectedAddress))
-  }
+  // Automatically select the address (saving via onSelect prop)
+  // when the selectedAddressID changes (and on load, using the default address)
+  const previousSelectedAddressID = usePrevious(selectedAddressID)
 
-  const refetchAddresses = () => {
-    return new Promise<void>((resolve, reject) =>
-      relay.refetch(
-        {
-          first: PAGE_SIZE,
-        },
-        null,
-        error => {
-          if (error) {
-            logger.error(error)
-            reject(error)
-          } else {
-            resolve()
-          }
-        }
-      )
-    )
+  useEffect(() => {
+    if (selectedAddressID && selectedAddressID !== previousSelectedAddressID) {
+      const selectedAddress = getAddressByID(addressList, selectedAddressID)
+      if (!selectedAddress) {
+        logger.warn("Address not found, can't submit: ", selectedAddressID)
+      }
+      onSelect(addressWithFallbackValues(selectedAddress))
+    }
+  }, [
+    selectedAddressID,
+    addressList,
+    onSelect,
+    previousSelectedAddressID,
+    logger,
+  ])
+
+  const handleClickAddress = (id: string): void => {
+    setSelectedAddressID(id)
+    orderTracking.clickedShippingAddress()
   }
 
   const handleClickEditAddress = (address: SavedAddressType) => {
-    setSelectedAddressID(address.id)
+    setSelectedAddressID(address.internalID)
     setActiveModal({
       type: AddressModalActionType.EDIT_USER_ADDRESS,
       address: address,
@@ -123,7 +119,7 @@ const SavedAddresses: React.FC<SavedAddressesProps> = props => {
   }
 
   const refetchAndSelectAddress = async (addressID: string) => {
-    await refetchAddresses()
+    console.log("selecting address", addressID)
     setSelectedAddressID(addressID)
   }
 
@@ -131,7 +127,7 @@ const SavedAddresses: React.FC<SavedAddressesProps> = props => {
     <>
       <RadioGroup
         disabled={!props.active}
-        onSelect={handleSelectAddress}
+        onSelect={handleClickAddress}
         defaultValue={selectedAddressID}
       >
         {addressList.map((address, index) => {
@@ -198,7 +194,6 @@ export const SavedAddressesFragmentContainer = createRefetchContainer(
           totalCount
           edges {
             node {
-              id
               internalID
               addressLine1
               addressLine2

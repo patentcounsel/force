@@ -1,6 +1,7 @@
 import { Button, ButtonProps } from "@artsy/palette"
 import { useSaveSelectedShippingQuote } from "Apps/Order/Routes/Shipping2/Hooks/useSaveSelectedShippingQuote"
 import { useShippingContext } from "Apps/Order/Routes/Shipping2/Hooks/useShippingContext"
+import { useRouter } from "System/Router/useRouter"
 import { SaveAndContinueButton_order$key } from "__generated__/SaveAndContinueButton_order.graphql"
 import { graphql, useFragment } from "react-relay"
 
@@ -22,7 +23,10 @@ export const SaveAndContinueButton: React.FC<SaveAndContinueButtonProps> = ({
     order
   )
 
+  const { router } = useRouter()
+
   const shippingContext = useShippingContext()
+
   const { saveSelectedShippingQuote } = useSaveSelectedShippingQuote(data)
 
   const disableSubmit = (() => {
@@ -51,6 +55,10 @@ export const SaveAndContinueButton: React.FC<SaveAndContinueButtonProps> = ({
 
     if (shippingContext.state.stage === "shipping_quotes") {
       await saveSelectedShippingQuote()
+    }
+
+    if (shippingContext.state.stage === "advance_on_click") {
+      router.push(`/orders/${data.internalID}/payment`)
     }
   }
 

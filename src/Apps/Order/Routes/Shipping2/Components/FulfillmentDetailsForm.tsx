@@ -63,15 +63,22 @@ export type AddressFormMode = "saved_addresses" | "new_address" | "pickup"
 export const FulfillmentDetailsForm = ({
   initialValues,
   onSubmit,
+  shippingMode,
   ...layoutProps
 }: FulfillmentDetailsFormProps) => {
   return (
     <Formik<FulfillmentValues>
       initialValues={initialValues}
       onSubmit={onSubmit}
-      validationSchema={VALIDATION_SCHEMA}
+      validationSchema={
+        // Defer to SavedAddresses for validation
+        shippingMode === "new_address" ? VALIDATION_SCHEMA : null
+      }
     >
-      <FulfillmentDetailsFormLayout {...layoutProps} />
+      <FulfillmentDetailsFormLayout
+        shippingMode={shippingMode}
+        {...layoutProps}
+      />
     </Formik>
   )
 }
@@ -175,8 +182,10 @@ const FulfillmentDetailsFormLayout = (
   const tabbableIf = (activeForm: AddressFormMode): 0 | -1 =>
     addressFormMode === activeForm ? 0 : -1
 
-  const handleSelectSavedAddress = (address: ShippingAddressFormValues) => {
-    setValues({
+  const handleSelectSavedAddress = async (
+    address: ShippingAddressFormValues
+  ) => {
+    await setValues({
       fulfillmentType: FulfillmentType.SHIP,
       attributes: {
         ...address,
@@ -184,6 +193,8 @@ const FulfillmentDetailsFormLayout = (
         addressVerifiedBy: null,
       },
     })
+
+    await formikContext.submitForm()
   }
 
   return (
@@ -252,8 +263,8 @@ const FulfillmentDetailsFormLayout = (
             <SavedAddressesFragmentContainer
               active={addressFormMode === "saved_addresses"}
               me={props.me}
-              onSelect={a => {
-                handleSelectSavedAddress(a)
+              onSelect={address => {
+                handleSelectSavedAddress(address)
               }}
             />
           </Collapse>

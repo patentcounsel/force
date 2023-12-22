@@ -75,7 +75,7 @@ export const ShippingContextProvider: FC<Pick<
     isPerformingOperation: false,
     newSavedAddressId: null,
     selectedShippingQuoteId: orderData.selectedShippingQuoteId ?? null,
-    stage: isArtsyShipping ? "refresh_shipping_quotes" : "fulfillment_details",
+    stage: "fulfillment_details",
   }
 
   const [state, dispatch] = useReducer(shippingStateReducer, initialState)
